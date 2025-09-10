@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教师节快乐 - 北安一中高一7班</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'STKaiti', serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 几何图形装饰 */
+        .geometric-shape {
+            position: absolute;
+            z-index: -1;
+            animation: float 6s ease-in-out infinite;
+            filter: blur(2px);
+            opacity: 0.7;
+        }
+
+        .shape-1 {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ffd3b6 0%, #ffaaa5 100%);
+            border-radius: 50%;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .shape-3 {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #ff8b94 0%, #ffaaa5 100%);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 4s;
+        }
+
+        .shape-4 {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #a2d2ff 0%, #bde0fe 100%);
+            border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
+            top: 30%;
+            right: 20%;
+            animation-delay: 1s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* 页面容器 */
+        .page-container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 20px;
+        }
+
+        .page.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .page.prev {
+            transform: translateX(-100%);
+        }
+
+        /* 导航栏 */
+        .nav-container {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 12px 24px;
+            border-radius: 50px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.5);
+            color: #5a67d8;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.05), 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-btn.active {
+            background: rgba(255, 255, 255, 0.9);
+            color: #e53e3e;
+            font-weight: 600;
+        }
+
+        /* 首页样式 */
+        .welcome-content {
+            text-align: center;
+            max-width: 800px;
+            animation: fadeInUp 1s ease;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .main-title {
+            font-size: 3.5em;
+            color: #5a67d8;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #5a67d8, #e53e3e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 2s infinite;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.8em;
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .teacher-name {
+            font-size: 2.2em;
+            color: #e53e3e;
+            margin-bottom: 30px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .message {
+            font-size: 1.3em;
+            color: #4a5568;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        /* 祝福页面 */
+        .blessing-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .blessing-card {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+            text-align: center;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .blessing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 36px rgba(50, 50, 93, 0.15), 0 6px 18px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .blessing-icon {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        .blessing-text {
+            font-size: 1.2em;
+            color: #4a5568;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        /* 游戏页面 */
+        .game-container {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .game-title {
+            font-size: 2em;
+            color: #5a67d8;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+            color: #4a5568;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .game-path {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .path-line {
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            height: 4px;
+            background: linear-gradient(90deg, #5a67d8, #e53e3e);
+            border-radius: 2px;
+            z-index: 1;
+        }
+
+        .position {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: 3px solid #5a67d8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            z-index: 2;
+            transition: all 0.5s ease;
+        }
+
+        .position.active {
+            background: #5a67d8;
+            color: white;
+            transform: scale(1.2);
+            box-shadow: 0 0 20px rgba(90, 103, 216, 0.5);
+        }
+
+        .position.completed {
+            background: #48bb78;
+            border-color: #48bb78;
+            color: white;
+        }
+
+        .question-area {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            color: #2d3748;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .option-btn {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .option-btn:hover {
+            background: rgba(90, 103, 216, 0.1);
+            border-color: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(90, 103, 216, 0.1);
+        }
+
+        .option-btn.correct {
+            background: #48bb78;
+            color: white;
+            border-color: #48bb78;
+        }
+
+        .option-btn.wrong {
+            background: #e53e3e;
+            color: white;
+            border-color: #e53e3e;
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .game-controls {
+            margin-top: 20px;
+        }
+
+        .control-btn {
+            padding: 12px 25px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .start-btn {
+            background: linear-gradient(45deg, #5a67d8, #805ad5);
+            color: white;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(90, 103, 216, 0.2);
+        }
+
+        .reset-game-btn {
+            background: linear-gradient(45deg, #e53e3e, #fc8181);
+            color: white;
+        }
+
+        .reset-game-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(229, 62, 62, 0.2);
+        }
+
+        .game-result {
+            font-size: 1.3em;
+            color: #5a67d8;
+            margin-top: 20px;
+            font-weight: bold;
+            min-height: 30px;
+        }
+
+        .final-score {
+            background: linear-gradient(45deg, #5a67d8, #805ad5);
+            color: white;
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        /* 动画效果 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes moveForward {
+            0% { transform: translateX(0) scale(1); }
+            50% { transform: translateX(20px) scale(1.3); }
+            100% { transform: translateX(0) scale(1); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-title { font-size: 2.5em; }
+            .subtitle { font-size: 1.5em; }
+            .teacher-name { font-size: 1.8em; }
+            .nav-container { flex-direction: column; gap: 10px; }
+            .blessing-container { grid-template-columns: 1fr; }
+            .options { grid-template-columns: 1fr; }
+            .game-path { flex-wrap: wrap; gap: 10px; }
+            .position { width: 50px; height: 50px; font-size: 1.2em; }
+            .welcome-content {
+                padding: 30px;
+            }
+            .game-container {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 几何图形装饰 -->
+    <div class="geometric-shape shape-1"></div>
+    <div class="geometric-shape shape-2"></div>
+    <div class="geometric-shape shape-3"></div>
+    <div class="geometric-shape shape-4"></div>
+
+    <!-- 导航栏 -->
+    <div class="nav-container">
+        <button class="nav-btn active" onclick="showPage('home')">首页</button>
+        <button class="nav-btn" onclick="showPage('blessing')">教师节祝福</button>
+        <button class="nav-btn" onclick="showPage('game')">诗文闯关</button>
+    </div>
+
+    <!-- 页面容器 -->
+    <div class="page-container">
+        <!-- 首页 -->
+        <div id="home" class="page active">
+            <div class="welcome-content">
+                <h1 class="main-title">🎉 教师节快乐 🎉</h1>
+                <h2 class="subtitle">北安一中高一7班全体同学</h2>
+                <h3 class="teacher-name">致最敬爱的刘佳怡老师</h3>
+                <p class="message">
+                    老师，您是我们文学路上的引路人，<br>
+                    用诗词歌赋点亮我们的心灵，<br>
+                    用文言经典启迪我们的人生。<br><br>
+                    在这个特别的日子里，<br>
+                    我们想说：<br>
+                    <strong>老师，您辛苦了！</strong><br>
+                    <strong>我们永远爱您！</strong>
+                </p>
+            </div>
+        </div>
+
+        <!-- 祝福页面 -->
+        <div id="blessing" class="page">
+            <div class="blessing-container">
+                <div class="blessing-card">
+                    <div class="blessing-icon">📚</div>
+                    <div class="blessing-text">
+                        感谢您用唐诗宋词浸润我们的心灵，让我们在文学的道路上不断前行！
+                    </div>
+                </div>
+                <div class="blessing-card">
+                    <div class="blessing-icon">✍️</div>
+                    <div class="blessing-text">
+                        感谢您用古文经典教导我们，让我们在文字的海洋中感受中华文化的博大精深！
+                    </div>
+                </div>
+                <div class="blessing-card">
+                    <div class="blessing-icon">🌸</div>
+                    <div class="blessing-text">
+                        感谢您用诗意的语言描绘世界，让我们学会用美的眼光看待生活！
+                    </div>
+                </div>
+                <div class="blessing-card">
+                    <div class="blessing-icon">🌟</div>
+                    <div class="blessing-text">
+                        感谢您用耐心的讲解指引我们，让我们在文言文的迷宫中找到方向！
+                    </div>
+                </div>
+                <div class="blessing-card">
+                    <div class="blessing-icon">🎓</div>
+                    <div class="blessing-text">
+                        感谢您用深厚的文学素养熏陶我们，让我们养成阅读和思考的好习惯！
+                    </div>
+                </div>
+                <div class="blessing-card">
+                    <div class="blessing-icon">🌺</div>
+                    <div class="blessing-text">
+                        愿您如春风化雨般永远年轻美丽，桃李满天下，文思泉涌！
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 游戏页面 -->
+        <div id="game" class="page">
+            <div class="game-container">
+                <h2 class="game-title">📖 古诗文闯关游戏 📖</h2>
+                <div class="game-info">
+                    <div class="info-item">
+                        <span>⏱️ 时间: <span id="gameTime">00:00</span></span>
+                    </div>
+                    <div class="info-item">
+                        <span>⭐ 得分: <span id="gameScore">0</span></span>
+                    </div>
+                    <div class="info-item">
+                        <span>❤️ 生命: <span id="gameLives">3</span></span>
+                    </div>
+                </div>
+                
+                <div class="game-path">
+                    <div class="path-line"></div>
+                    <div class="position active" id="pos0">🚶</div>
+                    <div class="position" id="pos1">📚</div>
+                    <div class="position" id="pos2">📝</div>
+                    <div class="position" id="pos3">🎓</div>
+                    <div class="position" id="pos4">🏆</div>
+                </div>
+
+                <div class="question-area" id="questionArea" style="display: none;">
+                    <div class="question-text" id="questionText"></div>
+                    <div class="options" id="optionsContainer"></div>
+                </div>
+
+                <div class="game-controls">
+                    <button class="control-btn start-btn" id="startBtn" onclick="startGame()">开始闯关</button>
+                    <button class="control-btn reset-game-btn" id="resetBtn" onclick="resetGame()" style="display: none;">重新开始</button>
+                </div>
+
+                <div class="game-result" id="gameResult"></div>
+                <div class="final-score" id="finalScore" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 页面切换功能
+        function showPage(pageId) {
+            // 更新导航按钮状态
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // 页面切换动画
+            const pages = document.querySelectorAll('.page');
+            const currentPage = document.querySelector('.page.active');
+            const targetPage = document.getElementById(pageId);
+
+            if (currentPage === targetPage) return;
+
+            // 添加过渡效果
+            currentPage.classList.remove('active');
+            currentPage.classList.add('prev');
+            
+            setTimeout(() => {
+                currentPage.classList.remove('prev');
+                targetPage.classList.add('active');
+            }, 100);
+        }
+
+        // 游戏数据
+        const questions = [
+            {
+                question: "《论语》中'学而时习之，不亦说乎'的'说'字读音是？",
+                options: ["shuō", "yuè", "shuì", "tuō"],
+                correct: 1,
+                explanation: "'说'在这里是'悦'的通假字，读yuè，表示高兴的意思。"
+            },
+            {
+                question: "《出师表》中'先帝创业未半而中道崩殂'的'崩殂'意思是？",
+                options: ["失败", "生病", "死亡", "退位"],
+                correct: 2,
+                explanation: "'崩殂'指帝王去世，是古代对帝王死亡的委婉说法。"
+            },
+            {
+                question: "《岳阳楼记》中'不以物喜，不以己悲'体现了作者怎样的人生态度？",
+                options: ["乐观豁达", "忧国忧民", "淡泊名利", "豁达淡然"],
+                correct: 3,
+                explanation: "这句话体现了作者豁达淡然的人生态度，不因外物好坏和个人得失而或喜或悲。"
+            },
+            {
+                question: "《桃花源记》中'黄发垂髫，并怡然自乐'的'垂髫'指的是？",
+                options: ["老人", "小孩", "青年", "妇女"],
+                correct: 1,
+                explanation: "'垂髫'指小孩，因为古代儿童头发下垂，所以用'垂髫'代指小孩。"
+            },
+            {
+                question: "《醉翁亭记》中'醉翁之意不在酒，在乎山水之间也'的'醉翁'指的是？",
+                options: ["李白", "杜甫", "欧阳修", "苏轼"],
+                correct: 2,
+                explanation: "'醉翁'是欧阳修的自号，他在《醉翁亭记》中自称'醉翁'。"
+            },
+            {
+                question: "《爱莲说》中'出淤泥而不染，濯清涟而不妖'赞美了莲花的什么品质？",
+                options: ["美丽动人", "高洁坚贞", "清香怡人", "姿态优雅"],
+                correct: 1,
+                explanation: "这句话赞美了莲花高洁坚贞的品质，虽处污泥之中却保持纯洁不染。"
+            },
+            {
+                question: "《论语》中'三人行，必有我师焉'体现了怎样的学习态度？",
+                options: ["虚心好学", "不耻下问", "学而不厌", "温故知新"],
+                correct: 0,
+                explanation: "这句话体现了虚心好学的态度，认为每个人都有值得学习的地方。"
+            },
+            {
+                question: "《孟子》中'天时不如地利，地利不如人和'强调了什么的重要性？",
+                options: ["自然环境", "地理位置", "人心团结", "时机把握"],
+                correct: 2,
+                explanation: "这句话强调了人心团结的重要性，认为人和比天时、地利都更重要。"
+            },
+            {
+                question: "《劝学》中'不积跬步，无以至千里'的'跬步'指的是？",
+                options: ["一大步", "一小步", "跑步", "止步"],
+                correct: 1,
+                explanation: "'跬步'指一小步，这句话说明学习要从小处积累，循序渐进。"
+            },
+            {
+                question: "《兰亭集序》中'后之视今，亦犹今之视昔'表达了作者怎样的感慨？",
+                options: ["时光易逝", "人生无常", "历史循环", "珍惜当下"],
+                correct: 0,
+                explanation: "这句话表达了作者对时光易逝的感慨，认为后人看今人就像今人看古人一样。"
+            }
+        ];
+
+        // 游戏状态
+        let gameState = {
+            currentPosition: 0,
+            score: 0,
+            lives: 3,
+            startTime: null,
+            timerInterval: null,
+            currentQuestion: null,
+            gameActive: false
+        };
+
+        // 开始游戏
+        function startGame() {
+            gameState = {
+                currentPosition: 0,
+                score: 0,
+                lives: 3,
+                startTime: Date.now(),
+                timerInterval: null,
+                currentQuestion: null,
+                gameActive: true
+            };
+
+            document.getElementById('startBtn').style.display = 'none';
+            document.getElementById('resetBtn').style.display = 'inline-block';
+            document.getElementById('questionArea').style.display = 'block';
+            document.getElementById('gameResult').textContent = '';
+
+            updateDisplay();
+            startTimer();
+            showNextQuestion();
+        }
+
+        // 计时器
+        function startTimer() {
+            gameState.timerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - gameState.startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                document.getElementById('gameTime').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // 显示下一题
+        function showNextQuestion() {
+            if (gameState.currentPosition >= 4) {
+                endGame(true);
+                return;
+            }
+
+            const questionIndex = Math.floor(Math.random() * questions.length);
+            gameState.currentQuestion = questions[questionIndex];
+            
+            document.getElementById('questionText').textContent = gameState.currentQuestion.question;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            gameState.currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+                button.onclick = () => checkAnswer(index);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        // 检查答案
+        function checkAnswer(selectedIndex) {
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => btn.disabled = true);
+
+            const correct = selectedIndex === gameState.currentQuestion.correct;
+            
+            if (correct) {
+                buttons[selectedIndex].classList.add('correct');
+                gameState.score += 100;
+                gameState.currentPosition++;
+                moveCharacter();
+                
+                setTimeout(() => {
+                    if (gameState.currentPosition < 4) {
+                        showNextQuestion();
+                    } else {
+                        endGame(true);
+                    }
+                }, 1500);
+            } else {
+                buttons[selectedIndex].classList.add('wrong');
+                buttons[gameState.currentQuestion.correct].classList.add('correct');
+                gameState.lives--;
+                gameState.score = Math.max(0, gameState.score - 50);
+                
+                if (gameState.lives <= 0) {
+                    setTimeout(() => endGame(false), 1500);
+                } else {
+                    setTimeout(() => {
+                        showNextQuestion();
+                    }, 2000);
+                }
+            }
+            
+            updateDisplay();
+        }
+
+        // 移动角色
+        function moveCharacter() {
+            const currentPos = document.getElementById(`pos${gameState.currentPosition - 1}`);
+            const newPos = document.getElementById(`pos${gameState.currentPosition}`);
+            
+            currentPos.classList.remove('active');
+            currentPos.classList.add('completed');
+            newPos.classList.add('active');
+            
+            // 添加移动动画
+            newPos.style.animation = 'moveForward 0.6s ease';
+            setTimeout(() => {
+                newPos.style.animation = '';
+            }, 600);
+        }
+
+        // 更新显示
+        function updateDisplay() {
+            document.getElementById('gameScore').textContent = gameState.score;
+            document.getElementById('gameLives').textContent = '❤️'.repeat(gameState.lives);
+        }
+
+        // 结束游戏
+        function endGame(won) {
+            gameState.gameActive = false;
+            clearInterval(gameState.timerInterval);
+            
+            const finalTime = document.getElementById('gameTime').textContent;
+            const timeBonus = Math.max(0, 300 - Math.floor((Date.now() - gameState.startTime) / 1000));
+            const finalScore = gameState.score + timeBonus;
+            
+            let resultText = '';
+            let grade = '';
+            
+            if (won) {
+                if (finalScore >= 800) {
+                    grade = '状元 🏆';
+                    resultText = '太棒了！您真是诗文大师！';
+                } else if (finalScore >= 600) {
+                    grade = '榜眼 🥈';
+                    resultText = '优秀！您对古诗文很有造诣！';
+                } else {
+                    grade = '探花 🥉';
+                    resultText = '不错！继续努力会更出色！';
+                }
+            } else {
+                grade = '秀才 📚';
+                resultText = '别灰心，多练习一定会更好！';
+            }
+            
+            document.getElementById('questionArea').style.display = 'none';
+            document.getElementById('gameResult').innerHTML = 
+                `<h3>${won ? '🎉 闯关成功！' : '💪 继续加油！'}</h3>`;
+            
+            document.getElementById('finalScore').innerHTML = `
+                <h3>${resultText}</h3>
+                <p>最终等级：${grade}</p>
+                <p>基础得分：${gameState.score} 分</p>
+                <p>时间奖励：${timeBonus} 分</p>
+                <p><strong>总分：${finalScore} 分</strong></p>
+                <p>用时：${finalTime}</p>
+            `;
+            document.getElementById('finalScore').style.display = 'block';
+        }
+
+        // 重置游戏
+        function resetGame() {
+            clearInterval(gameState.timerInterval);
+            
+            // 重置所有位置
+            for (let i = 0; i <= 4; i++) {
+                const pos = document.getElementById(`pos${i}`);
+                pos.classList.remove('active', 'completed');
+                if (i === 0) pos.classList.add('active');
+            }
+            
+            document.getElementById('startBtn').style.display = 'inline-block';
+            document.getElementById('resetBtn').style.display = 'none';
+            document.getElementById('questionArea').style.display = 'none';
+            document.getElementById('gameResult').textContent = '';
+            document.getElementById('finalScore').style.display = 'none';
+            document.getElementById('gameTime').textContent = '00:00';
+            document.getElementById('gameScore').textContent = '0';
+            document.getElementById('gameLives').textContent = '3';
+        }
+
+        // 添加页面加载动画
+        window.addEventListener('load', function() {
+            document.querySelector('.welcome-content').style.animation = 'fadeInUp 1s ease';
+        });
+
+        // 添加键盘导航支持
+        document.addEventListener('keydown', function(e) {
+            const pages = ['home', 'blessing', 'game'];
+            const currentPage = document.querySelector('.page.active').id;
+            const currentIndex = pages.indexOf(currentPage);
+            
+            if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                const prevPage = pages[currentIndex - 1];
+                document.querySelector(`[onclick="showPage('${prevPage}')"]`).click();
+            } else if (e.key === 'ArrowRight' && currentIndex < pages.length - 1) {
+                const nextPage = pages[currentIndex + 1];
+                document.querySelector(`[onclick="showPage('${nextPage}')"]`).click();
+            }
+        });
+
+        // 添加触摸滑动支持
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handle
